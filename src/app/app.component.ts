@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 
 @Component({
   selector: 'app-root',
@@ -6,5 +7,19 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'my-app';
+    user = { id : 1, name : 'Hello'};
+  constructor(private http: HttpClient) {}
+
+    callServer() {
+        const headers = new HttpHeaders()
+            .set('Authorization', 'my-auth-token')
+            .set('Content-Type', 'application/json');
+
+          this.http.post('http://127.0.0.1:3000/ping', JSON.stringify(this.user), {
+            headers: headers
+        })
+            .subscribe(data => {
+                console.log(data);
+            });
+    }
 }
